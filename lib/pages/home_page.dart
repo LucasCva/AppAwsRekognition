@@ -11,93 +11,125 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  File? _image; // <-- MOVIDO PARA FORA DO build()
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    File? _image;
 
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(16, screenHeight * 0.02, 0, 0),
-              child: Text(
-                "Envie a sua foto para ser analisada",
-                style: TextStyle(fontSize: 30),
+        child: SingleChildScrollView(
+          // Adiciona rolagem para telas pequenas
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(16, screenHeight * 0.02, 0, 0),
+                child: Text(
+                  "Envie a sua foto para ser analisada",
+                  style: TextStyle(fontSize: 30),
+                ),
               ),
-            ),
 
-            Padding(
-              padding: EdgeInsets.fromLTRB(16, screenHeight * 0.01, 16, 0),
-              child: Text(
-                "Nosso aplicativo utiliza o poder da inteligência artificial da Amazon Web Services (AWS) para realizar uma análise avançada de imagens. Por meio do serviço Amazon Rekognition, conseguimos detectar se sua imagem é algum tipo de conteúdo impróprio ou não",
-                textAlign: TextAlign.justify,
+              Padding(
+                padding: EdgeInsets.fromLTRB(16, screenHeight * 0.01, 16, 0),
+                child: Text(
+                  "Nosso aplicativo utiliza o poder da inteligência artificial da Amazon Web Services (AWS) para realizar uma análise avançada de imagens. Por meio do serviço Amazon Rekognition, conseguimos detectar se sua imagem é algum tipo de conteúdo impróprio ou não",
+                  textAlign: TextAlign.justify,
+                ),
               ),
-            ),
 
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, screenHeight * 0.05, 0, 0),
-              child: GestureDetector(
-                onTap: () async {
-                  final image = await ImageController.pegarImagemDaGaleria();
-                  if (image != null) {
-                    _image = image;
-                  }
-                },
-                child: Container(
-                  height: screenHeight * 0.25,
-                  width: screenWidth * 0.9,
-                  decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(40),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, screenHeight * 0.05, 0, 0),
+                child: GestureDetector(
+                  onTap: () async {
+                    final image = await ImageController.pegarImagemDaGaleria();
+                    if (image != null) {
+                      setState(() {
+                        _image = image;
+                      });
+                    }
+                  },
+                  child: Container(
+                    height: screenHeight * 0.25,
+                    width: screenWidth * 0.9,
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: Center(
+                      child: _image == null
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.image),
+                                Text(
+                                  "Selecionar arquivo",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ],
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(40),
+                              child: Image.file(
+                                _image!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              ),
+                            ),
+                    ),
                   ),
-                  child: Center(
-                    child: Column(
+                ),
+              ),
+
+              Padding(
+                padding: EdgeInsets.only(top: screenHeight * 0.03),
+                child: Text("Ou"),
+              ),
+
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  screenWidth * 0.05,
+                  screenHeight * 0.03,
+                  screenHeight * 0.05,
+                  0,
+                ),
+                child: GestureDetector(
+                  onTap: () async {
+                    final image = await ImageController.pegarImagemDaCamera();
+                    if (image != null) {
+                      setState(() {
+                        _image = image;
+                      });
+                    }
+                  },
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                    ),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.image),
-                        Text(
-                          "Selecionar arquivo",
-                          style: TextStyle(fontSize: 15),
-                        ),
+                        Icon(Icons.camera_alt),
+                        Text("  Abra a câmera & Tire uma foto"),
                       ],
                     ),
                   ),
                 ),
               ),
-            ),
-
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, screenHeight * 0.05, 0, 0),
-              child: Text("Ou"),
-            ),
-
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                screenWidth * 0.05,
-                screenHeight * 0.05,
-                screenHeight * 0.05,
-                0,
-              ),
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.all(Radius.circular(25)),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.camera_alt),
-                    Text("Abra a câmera & Tire uma foto"),
-                  ],
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 0,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.image), label: "Imagens"),
+        ],
       ),
     );
   }
