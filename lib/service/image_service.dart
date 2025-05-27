@@ -8,7 +8,7 @@ class ImageService {
   static Future<ImageResponse> enviarImagem(File image) async {
     final request = http.MultipartRequest(
       "POST",
-      Uri.parse("http://10.66.17.103:8080/api/image"),
+      Uri.parse("http://192.168.1.16:8080/api/image"),
     );
     request.files.add(await http.MultipartFile.fromPath("file", image.path));
 
@@ -18,6 +18,7 @@ class ImageService {
     if (response.statusCode == 200) {
       print(response.statusCode);
       final data = jsonDecode(responseBody);
+
       return ImageResponse.fromJson(data);
     } else {
       throw Exception("Erro ao enviar a imagem ${response.statusCode}");
