@@ -4,6 +4,7 @@ import 'package:aws_rekognition/controllers/image_controller.dart';
 import 'package:aws_rekognition/service/image_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:get/utils.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -167,13 +168,84 @@ class _HomePageState extends State<HomePage> {
                       _image = null;
                     });
 
-                    Get.showSnackbar(
-                      GetSnackBar(
-                        title: "Imagem",
-                        message: "${response.imageIsPermitted}",
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
+                    if (response.imageIsPermitted) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            backgroundColor: Color.fromARGB(255, 20, 21, 27),
+                            title: Center(
+                              child: Text(
+                                "Imagem aceita",
+                                style: TextStyle(color: Colors.green),
+                              ),
+                            ),
+                            content: Text(
+                              "Sua imagem foi analisada e está dentro dos padrões e foi adicionada à nossa galeria.",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: Text(
+                                  "Ok",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      String motivos = response.moderationsList
+                          .map((item) {
+                            final categoria = item.parentName.isNotEmpty
+                                ? " (${item.parentName})"
+                                : "";
+                            return "- ${item.name}$categoria (confiança: ${item.confidence.toStringAsFixed(1)}%)";
+                          })
+                          .join("\n");
+
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            backgroundColor: Color.fromARGB(255, 20, 21, 27),
+                            title: Center(
+                              child: Text(
+                                "Imagem recusada",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                            content: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Sua imagem foi analisada e está fora dos padrões.\n\nMotivos:",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    motivos,
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: Text(
+                                  "Ok",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   },
                   child: Container(
                     height: 50,

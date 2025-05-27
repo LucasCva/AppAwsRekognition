@@ -8,7 +8,7 @@ class ImageService {
   static Future<ImageResponse> enviarImagem(File image) async {
     final request = http.MultipartRequest(
       "POST",
-      Uri.parse("http://192.168.1.16:8080/api/image"),
+      Uri.parse("https://rekognition-app-production.up.railway.app/api/image"),
     );
     request.files.add(await http.MultipartFile.fromPath("file", image.path));
 

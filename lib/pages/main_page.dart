@@ -24,10 +24,15 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       body: _pages[_indiceAtual],
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.white,
+        backgroundColor: Color.fromARGB(255, 20, 21, 27),
         onTap: onTabTapped,
         currentIndex: _indiceAtual,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, color: Colors.white),
+            label: "Home",
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.image), label: "Imagens"),
         ],
       ),
