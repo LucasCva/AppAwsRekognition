@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../controllers/home_page_controller.dart';
 
 class ImagesPage extends StatefulWidget {
   const ImagesPage({super.key});
@@ -8,6 +10,9 @@ class ImagesPage extends StatefulWidget {
 }
 
 class _ImagesPageState extends State<ImagesPage> {
+  // altere os nomes depois
+  final HomePageController _controller = Get.find<HomePageController>();
+
   final List<String> imageUrls = [
     'https://picsum.photos/id/237/300/300',
     'https://picsum.photos/id/238/300/300',
