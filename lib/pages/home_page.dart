@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:aws_rekognition/controllers/image_controller.dart';
+import 'package:aws_rekognition/service/imege_service.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,8 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  File? _image; // <-- MOVIDO PARA FORA DO build()
-
+  File? _image;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -21,7 +21,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          // Adiciona rolagem para telas pequenas
           child: Column(
             children: [
               Padding(
@@ -70,13 +69,15 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ],
                             )
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(40),
-                              child: Image.file(
-                                _image!,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                              ),
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.image),
+                                Text(
+                                  "Arquivo selecionado",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ],
                             ),
                     ),
                   ),
@@ -92,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.fromLTRB(
                   screenWidth * 0.05,
                   screenHeight * 0.03,
-                  screenHeight * 0.05,
+                  screenWidth * 0.05,
                   0,
                 ),
                 child: GestureDetector(
@@ -120,16 +121,18 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+
+              ElevatedButton(
+                onPressed: () async {
+                  print("Botão clicado");
+                  await ImageService.enviarImagem(_image!);
+                  print("Imagem enviada");
+                },
+                child: Icon(Icons.send),
+              ),
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.image), label: "Imagens"),
-        ],
       ),
     );
   }
