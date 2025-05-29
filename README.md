@@ -1,4 +1,4 @@
-# 🛡️ Image Guardian - Filtro de Imagens com AWS Rekognition
+# Filtro de Imagens com AWS Rekognition
 
 Este é um aplicativo mobile criado para uma apresentação de inovações tecnológicas. O projeto tem como objetivo analisar imagens enviadas pelos usuários e verificar se elas são apropriadas, utilizando o serviço **AWS Rekognition**, integrado a um backend desenvolvido em **Spring Boot**.
 
