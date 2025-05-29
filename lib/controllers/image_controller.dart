@@ -8,6 +8,7 @@ class ImageController {
     final imagePicker = ImagePicker();
     final XFile? pickedFile = await imagePicker.pickImage(
       source: ImageSource.gallery,
+      imageQuality: 50,
     );
     return pickedFile != null ? File(pickedFile.path) : null;
   }
@@ -17,6 +18,7 @@ class ImageController {
     final imagePicker = ImagePicker();
     final XFile? pickedFile = await imagePicker.pickImage(
       source: ImageSource.camera,
+      imageQuality: 50,
     );
     return pickedFile != null ? File(pickedFile.path) : null;
   }

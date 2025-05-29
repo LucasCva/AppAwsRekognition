@@ -1,6 +1,7 @@
+import 'package:aws_rekognition/controllers/home_page_controller.dart';
 import 'package:aws_rekognition/pages/main_page.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get.dart';
 
 void main() {
   Get.put(HomePageController());

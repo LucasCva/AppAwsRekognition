@@ -24,4 +24,18 @@ class ImageService {
       throw Exception("Erro ao enviar a imagem ${response.statusCode}");
     }
   }
+
+  static Future<List<String>> fecthImagesUrl() async {
+    final response = await http.get(
+      Uri.parse("https://rekognition-app-production.up.railway.app/api/image"),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print(data.toString());
+      return List<String>.from(data["imagesUrl"]);
+    } else {
+      throw Exception('Erro ao carregar URLs das imagens');
+    }
+  }
 }

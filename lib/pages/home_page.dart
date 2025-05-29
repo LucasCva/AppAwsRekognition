@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:aws_rekognition/controllers/image_controller.dart';
 import 'package:aws_rekognition/service/image_service.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
-import 'package:get/utils.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

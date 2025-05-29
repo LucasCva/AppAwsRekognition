@@ -25,14 +25,12 @@ class _MainPageState extends State<MainPage> {
       body: _pages[_indiceAtual],
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.white,
+        unselectedItemColor: const Color.fromARGB(255, 197, 197, 197),
         backgroundColor: Color.fromARGB(255, 20, 21, 27),
         onTap: onTabTapped,
         currentIndex: _indiceAtual,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.white),
-            label: "Home",
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.image), label: "Imagens"),
         ],
       ),

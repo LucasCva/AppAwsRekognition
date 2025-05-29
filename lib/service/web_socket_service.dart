@@ -6,7 +6,7 @@ class WebSocketService {
   void connect(Function(String) onUpdates) {
     _stompClient = StompClient(
       config: StompConfig.sockJS(
-        url: 'http://192.168.1.8:8080/ws',
+        url: 'https://rekognition-app-production.up.railway.app/ws',
         onConnect: (StompFrame frame) {
           print("🟢 Conectado ao servidor");
           _stompClient.subscribe(

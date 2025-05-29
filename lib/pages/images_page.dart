@@ -10,38 +10,40 @@ class ImagesPage extends StatefulWidget {
 }
 
 class _ImagesPageState extends State<ImagesPage> {
-  // altere os nomes depois
-  final HomePageController _controller = Get.find<HomePageController>();
-
-  final List<String> imageUrls = [
-    'https://picsum.photos/id/237/300/300',
-    'https://picsum.photos/id/238/300/300',
-    'https://picsum.photos/id/239/300/300',
-    'https://picsum.photos/id/240/300/300',
-    'https://picsum.photos/id/241/300/300',
-    'https://picsum.photos/id/242/300/300',
-    'https://app-caserta-2025.s3.us-east-1.amazonaws.com/imagens/1748313013_843b5dd3-66b6-4750-853f-f7a2dbfe0d5a3692764802108515078.jpg',
-  ];
+  final HomePageController _homePageController = Get.find<HomePageController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 20, 21, 27),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _homePageController.refreshImages();
+        },
+        child: const Icon(Icons.refresh),
+        backgroundColor: Colors.blueAccent,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
-          itemCount: imageUrls.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 5,
-            crossAxisSpacing: 5,
-          ),
-          itemBuilder: (context, index) {
-            return ClipRRect(
-              borderRadius: BorderRadiusGeometry.circular(8),
-              child: Image.network(imageUrls[index], fit: BoxFit.cover),
-            );
-          },
-        ),
+        child: Obx(() {
+          return GridView.builder(
+            itemCount: _homePageController.imagesUrl.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 5,
+              crossAxisSpacing: 5,
+            ),
+            itemBuilder: (context, index) {
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  _homePageController.imagesUrl[index],
+                  fit: BoxFit.cover,
+                ),
+              );
+            },
+          );
+        }),
       ),
     );
   }
